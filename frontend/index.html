@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ask Gemini</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h2>Ask Gemini</h2>
+        <p>Your AI Assistant</p>
+    </header>
+
+    <main>
+        <h1>Ask Anything</h1>
+        <p class="subtitle">Ask Gemini your questions and get an AI-powered answer.</p>
+
+        <div class="ask-box">
+            <input id="question" placeholder="Type your question here...">
+            <button onclick="askGemini()">Ask Gemini</button>
+        </div>
+
+        <div class="answer-box">
+            <h3>Answer</h3>
+            <p id="answer">Your answer will appear here...</p>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 Ask Gemini | Built with Node.js & Express</p>
+    </footer>
+
+    <script>
+        async function askGemini() {
+            
+            const question = document.getElementById("question").value;
+            
+            const response = await fetch("/ask", {
+                
+                method: "POST",
+                
+                headers: {
+                    
+                    "Content-Type": "application/json"
+                },
+                
+                body: JSON.stringify({ question })
+            
+       });
+       
+       const data = await response.json();
+       
+       document.getElementById("answer").textContent = data.answer;
+    
+    }
+    </script>
+</body>
+</html>
