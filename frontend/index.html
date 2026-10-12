@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ask Gemini</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -8,22 +10,58 @@
 <body>
 
     <header>
-        <h2>Ask Gemini</h2>
+        <h2>✨ Ask Gemini</h2>
         <p>Your AI Assistant</p>
     </header>
 
     <main>
-        <h1>Ask Anything</h1>
-        <p class="subtitle">Ask Gemini your questions and get an AI-powered answer.</p>
+        <div class="hero">
+            <span class="tag">✦ AI POWERED ASSISTANT</span>
 
-        <div class="ask-box">
-            <input id="question" placeholder="Type your question here...">
-            <button onclick="askGemini()">Ask Gemini</button>
+            <h1>Ask Anything<span>.</span></h1>
+
+            <p class="subtitle">
+                Ask Gemini your questions and get an
+                AI-powered answer in seconds.
+            </p>
         </div>
 
+       
+        <div class="ask-box">
+            <input
+                type="text"
+                id="question"
+                placeholder="Type your question here..."
+            >
+
+            <button onclick="askGemini()">
+                Ask Gemini ↗
+            </button>
+        </div>
+
+        
         <div class="answer-box">
-            <h3>Answer</h3>
-            <p id="answer">Your answer will appear here...</p>
+            <div class="answer-header">
+                <div class="answer-title">
+                    <div class="icon">✦</div>
+                    <div>
+                        <h3>Gemini Response</h3>
+                        <p>Your AI-generated answer</p>
+                    </div>
+                </div>
+
+                <span class="status">● Ready</span>
+            </div>
+
+            <div class="answer-content">
+                <p id="answer">
+                    Your answer will appear here...
+                </p>
+            </div>
+
+            <div class="answer-footer">
+                <span>✨ Powered by Gemini AI</span>
+            </div>
         </div>
     </main>
 
@@ -33,27 +71,52 @@
 
     <script>
         async function askGemini() {
-            
             const question = document.getElementById("question").value;
-            
-            const response = await fetch("/ask", {
-                
-                method: "POST",
-                
-                headers: {
-                    
-                    "Content-Type": "application/json"
-                },
-                
-                body: JSON.stringify({ question })
-            
-       });
-       
-       const data = await response.json();
-       
-       document.getElementById("answer").textContent = data.answer;
-    
-    }
+
+            if (!question.trim()) {
+                document.getElementById("answer").textContent =
+                    "Please enter a question first.";
+                return;
+            }
+
+            document.getElementById("answer").textContent =
+                "Thinking... Please wait.";
+
+            try {
+                const response = await fetch("/ask", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ question })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || "Something went wrong");
+                }
+
+                document.getElementById("answer").textContent =
+                    data.answer || "No answer received.";
+
+            } catch (error) {
+                document.getElementById("answer").textContent =
+                    "Unable to get an answer. Please try again.";
+            }
+        }
+
+        document.getElementById("question").addEventListener(
+            "keydown",
+            function(event) {
+                if (event.key === "Enter") {
+                    askGemini();
+                }
+            }
+        );
     </script>
+
 </body>
 </html>
+
+
