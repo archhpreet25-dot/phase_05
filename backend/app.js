@@ -13,6 +13,10 @@ const ai = new GoogleGenAI({
 app.use(express.json());
 app.use(express.static("../frontend"));
 
+app.get("/", (req, res) => {
+  res.send("Backend is running successfully!");
+});
+
 app.post("/ask", async (req, res) => {
     try {
         const { question } = req.body;
