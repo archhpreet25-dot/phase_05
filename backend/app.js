@@ -1,16 +1,20 @@
 import express from "express";
+import cors from "cors";
 import "dotenv/config";
 import { GoogleGenAI } from "@google/genai";
 
 const app = express();
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5000;
 
 const ai = new GoogleGenAI({
     apiKey: process.env.GEMINI_API_KEY
 });
 
 app.use(express.json());
+app.use(cors({
+    origin: "https://phase05-frontend-cc09b30j9-navgurukul3.vercel.app"
+}));
 app.use(express.static("../frontend"));
 
 app.get("/", (req, res) => {
