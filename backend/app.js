@@ -11,10 +11,13 @@ const ai = new GoogleGenAI({
     apiKey: process.env.GEMINI_API_KEY
 });
 
-app.use(express.json());
-app.use(cors({
-    origin: "https://phase05-frontend-cc09b30j9-navgurukul3.vercel.app"
+app.use(express.json());app.use(cors({
+    origin: [
+        "https://phase05-frontend-cc09b30j9-navgurukul3.vercel.app",
+        "https://phase05-frontend-git-main-navgurukul3.vercel.app"
+    ]
 }));
+
 app.use(express.static("../frontend"));
 
 app.get("/", (req, res) => {
